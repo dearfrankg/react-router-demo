@@ -15,6 +15,18 @@ body,
   font-family: "Open Sans", sans-serif;
 }
 
+.gist li {
+  list-style: none;
+}
+
+.gist h1 {
+  margin-bottom: 5px;
+}
+
+.gist h4 {
+  margin-bottom: 10px;
+}
+
 .gist-list {
   list-style: none;
   width: 100%;
@@ -45,14 +57,11 @@ body,
 
 .body {
   display: flex;
-  height: calc(100% - 54px);
   box-sizing: border-box;
 }
 
 .sidebar {
-  border: 2px solid #1f73ff;
   margin-right: 10px;
-  background: #cbdfff;
   flex-basis: 120px;
   padding: 10px;
   display: flex;
@@ -66,8 +75,6 @@ body,
 
 .content {
   padding: 10px;
-  border: 2px solid #8bc34a;
-  background-color: #f1f8e9;
   flex: 1;
 }
 

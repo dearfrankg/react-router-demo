@@ -3,6 +3,27 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
+class GistFile extends React.Component {
+  state = {
+    file: null
+  };
+
+  componentDidMount() {
+    const { url } = this.props;
+
+    fetch(url)
+      .then(res => res.text())
+      .then(file => {
+        this.setState({ file });
+      });
+  }
+
+  render() {
+    const { file } = this.state;
+    return <pre className="file">{file}</pre>;
+  }
+}
+
 const GistList = ({ gists }) => (
   <ul className="gist-list">
     {gists &&
@@ -14,7 +35,17 @@ const GistList = ({ gists }) => (
   </ul>
 );
 
-const Gist = ({ gists }) => <div className="gist">{gist && gist.id}</div>;
+const Gist = ({ gist }) => (
+  <div className="gist">
+    <h1>{gist.description || "No Description"}</h1>
+    {Object.keys(gist.files).map((key, i) => (
+      <li key={i}>
+        <h4>{key}</h4>
+        <GistFile url={gist.files[key].raw_url} />
+      </li>
+    ))}
+  </div>
+);
 
 const user = {
   avatar: "https://avatars0.githubusercontent.com/u/36104?v=4",
@@ -36,12 +67,14 @@ const Sidebar = ({ gists }) => (
 const Content = ({ gists }) => (
   <div className="content">
     <Route exact={true} path="/" render={() => <h1>Welcome</h1>} />
-    <Route
-      path="/g/:gistId"
-      render={({ match }) => (
-        <Gist gist={gists.find(g => g.id === match.params.gistId)} />
-      )}
-    />
+    {gists && (
+      <Route
+        path="/g/:gistId"
+        render={({ match }) => (
+          <Gist gist={gists.find(g => g.id === match.params.gistId)} />
+        )}
+      />
+    )}
   </div>
 );
 
