@@ -15,6 +15,15 @@ body,
   font-family: "Open Sans", sans-serif;
 }
 
+.gist-list {
+  list-style: none;
+  width: 100%;
+}
+.gist-list li {
+  height: 22px;
+  font-size: 12px;
+}
+
 .user-avatar {
   border-radius: 50%;
   width: 64px;
@@ -36,9 +45,7 @@ body,
 
 .body {
   display: flex;
-  padding: 10px;
-  height: calc(100% - 57px);
-  background-color: lightcyan;
+  height: calc(100% - 54px);
   box-sizing: border-box;
 }
 
@@ -46,11 +53,9 @@ body,
   border: 2px solid #1f73ff;
   margin-right: 10px;
   background: #cbdfff;
-  max-height: 120px;
   flex-basis: 120px;
   padding: 10px;
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
