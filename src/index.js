@@ -3,7 +3,55 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-class GistList extends React.Component {
+const GistList = ({ gists }) => (
+  <ul className="gist-list">
+    {gists &&
+      gists.map((gist, i) => (
+        <li key={i}>
+          <Link to={`/g/${gist.id}`}>{gist.id}</Link>
+        </li>
+      ))}
+  </ul>
+);
+
+const Gist = ({ gists }) => <div className="gist">{gist && gist.id}</div>;
+
+const user = {
+  avatar: "https://avatars0.githubusercontent.com/u/36104?v=4",
+  name: "Frank",
+  followers: 1234,
+  following: 123
+};
+
+const UserAvatar = ({ size }) => (
+  <img className={`user-avatar ${size || ""}`} alt="avatar" src={user.avatar} />
+);
+
+const Sidebar = ({ gists }) => (
+  <div className="sidebar">
+    <GistList gists={gists} />
+  </div>
+);
+
+const Content = ({ gists }) => (
+  <div className="content">
+    <Route exact={true} path="/" render={() => <h1>Welcome</h1>} />
+    <Route
+      path="/g/:gistId"
+      render={({ match }) => (
+        <Gist gist={gists.find(g => g.id === match.params.gistId)} />
+      )}
+    />
+  </div>
+);
+
+const Nav = () => (
+  <div className="nav">
+    <UserAvatar size="small" />
+  </div>
+);
+
+class Body extends React.Component {
   state = {
     gists: null
   };
@@ -19,67 +67,22 @@ class GistList extends React.Component {
 
   render() {
     const { gists } = this.state;
-
     return (
-      <ul className="gist-list">
-        {gists && gists.map(gist => <li path={`/g/${gist.id}`}>{gist.id}</li>)}
-      </ul>
+      <div className="body">
+        <Sidebar gists={gists} />
+        <Content gists={gists} />
+      </div>
     );
   }
 }
 
-class Gist extends React.Component {
-  state = {
-    gist: null
-  };
-
-  render() {
-    const { gist } = this.state;
-
-    return <div className="gist">{gist.id}</div>;
-  }
-}
-
-const user = {
-  avatar: "https://avatars0.githubusercontent.com/u/36104?v=4",
-  name: "Frank",
-  followers: 1234,
-  following: 123
-};
-
-const UserAvatar = ({ size }) => (
-  <img className={`user-avatar ${size || ""}`} alt="avatar" src={user.avatar} />
-);
-
-const Sidebar = () => (
-  <div className="sidebar">
-    <GistList />
-  </div>
-);
-
-const Content = () => (
-  <div className="content">
-    <Gist />
-  </div>
-);
-
-const Nav = () => (
-  <div className="nav">
-    <UserAvatar size="small" />
-  </div>
-);
-
-const Body = () => (
-  <div className="body">
-    <Sidebar />
-  </div>
-);
-
 const App = () => (
-  <div className="app">
-    <Nav />
-    <Body />
-  </div>
+  <Router>
+    <div className="app">
+      <Nav />
+      <Body />
+    </div>
+  </Router>
 );
 
 const rootElement = document.getElementById("root");
